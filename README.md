@@ -1,5 +1,5 @@
 # Quake2_mod266
 A mod for the game Quake 2
 
-
-Just me trying to git push to work
+Press 1 to spawn a TURRET
+Press 2 to spawn an INFANTRY unit
