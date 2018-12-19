@@ -88,6 +88,7 @@ The normal starting point for a level.
 */
 void SP_info_player_start(edict_t *self)
 {
+	
 	if (!coop->value)
 		return;
 	if(Q_stricmp(level.mapname, "security") == 0)
@@ -96,6 +97,7 @@ void SP_info_player_start(edict_t *self)
 		self->think = SP_CreateCoopSpots;
 		self->nextthink = level.time + FRAMETIME;
 	}
+	
 }
 
 /*QUAKED info_player_deathmatch (1 0 1) (-16 -16 -24) (16 16 32)
@@ -1663,6 +1665,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		{
 			VectorCopy (pm.viewangles, client->v_angle);
 			VectorCopy (pm.viewangles, client->ps.viewangles);
+		}
+
+		if (ucmd->forwardmove != 0 || ucmd->sidemove != 0 && ent->svflags & SVF_NOCLIENT)
+		{
+			ent->svflags &= ~SVF_NOCLIENT;
 		}
 
 		gi.linkentity (ent);

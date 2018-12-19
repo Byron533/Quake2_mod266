@@ -586,7 +586,7 @@ void SP_monster_infantry (edict_t *self)
 
 	walkmonster_start (self);
 }
-
+/*
 //SPAWN
 void spawn_place_unit(edict_t *owner)
 {
@@ -623,3 +623,4 @@ void SP_place_unit(edict_t *self)
 
 	
 }
+*/

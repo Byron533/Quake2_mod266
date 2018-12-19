@@ -770,9 +770,12 @@ char *dm_statusbar =
 "endif "
 
 //  frags
-"xr	-50 "
+"if 14"
+"yb	-24"
+"xr	-58 "
 "yt 2 "
 "num 3 14 "
+"endif"
 
 // spectator
 "if 17 "

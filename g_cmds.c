@@ -966,15 +966,28 @@ void ClientCommand (edict_t *ent)
 		Cmd_PutAway_f (ent);
 	else if (Q_stricmp(cmd, "wave") == 0)
 		Cmd_Wave_f(ent);
+	else if (Q_stricmp(cmd, "cloak") == 0)
+	{
+		if (ent->svflags & SVF_NOCLIENT)
+		{
+			gi.cprintf(ent, PRINT_HIGH, "they cannot see you...\n");
+			ent->svflags -= SVF_NOCLIENT;
+		}
+		else
+		{
+			gi.cprintf(ent, PRINT_HIGH, "see you they cannot...\n");
+			ent->svflags |= SVF_NOCLIENT;
+		}
+	}
 	//'decoy' command
 	else if (Q_stricmp(cmd, "decoy") == 0)
 		SP_Decoy(ent);
 	//'place_unit' command
-	else if (Q_stricmp(cmd, "place_unit") == 0)
-		SP_place_unit(ent);
+	else if (Q_stricmp(cmd, "monster_infantry") == 0)
+		SP_monster_infantry(ent);
 	//'place_turret' command
-	else if (Q_stricmp(cmd, "place_turret") == 0)
-		SP_place_turret(ent);
+	else if (Q_stricmp(cmd, "monster_gladiator") == 0)
+		SP_monster_gladiator(ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
 	else	// anything that doesn't match a command will be a chat

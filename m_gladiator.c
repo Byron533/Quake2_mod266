@@ -310,6 +310,10 @@ void gladiator_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int da
 	gi.sound (self, CHAN_VOICE, sound_die, 1, ATTN_NORM, 0);
 	self->deadflag = DEAD_DEAD;
 	self->takedamage = DAMAGE_YES;
+	
+
+	//BYRON added this
+	self->creator->monster_gladiator = NULL;
 
 	self->monsterinfo.currentmove = &gladiator_move_death;
 }
@@ -317,13 +321,25 @@ void gladiator_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int da
 
 /*QUAKED monster_gladiator (1 .5 0) (-32 -32 -24) (32 32 64) Ambush Trigger_Spawn Sight
 */
-void SP_monster_gladiator (edict_t *self)
+
+//BYRON added this
+//SPAWN
+
+void SP_monster_gladiator (edict_t *owner)
 {
-	if (deathmatch->value)
-	{
-		G_FreeEdict (self);
-		return;
-	}
+	edict_t *self;
+	vec3_t forward;
+
+	self = G_Spawn();
+
+	//place unit 100 units forward of our position
+	AngleVectors(owner->client->v_angle, forward, NULL, NULL);
+	VectorMA(owner->s.origin, 100, forward, self->s.origin);
+
+	//link 2 entities together
+	owner->monster_gladiator = self;  //for the owner, this is a pointer to the decoy
+	self->creator = owner;	//for the placed unit, this is a pointer to the owner
+	//BYRON end
 
 
 	sound_pain1 = gi.soundindex ("gladiator/pain.wav");	
@@ -366,25 +382,7 @@ void SP_monster_gladiator (edict_t *self)
 
 	walkmonster_start (self);
 }
-
-//SPAWN
-void spawn_place_turret(edict_t *owner)
-{
-	edict_t *self;
-	vec3_t forward;
-
-	self = G_Spawn();
-
-	//place unit 100 units forward of our position
-	AngleVectors(owner->client->v_angle, forward, NULL, NULL);
-	VectorMA(owner->s.origin, 100, forward, self->s.origin);
-
-	//link 2 entities together
-	owner->place_unit = self;  //for the owner, this is a pointer to the decoy
-	self->creator = owner;	//for the placed unit, this is a pointer to the owner
-
-}
-
+//BYRON added this
 void SP_place_turret(edict_t *self)
 {
 	char *string;
@@ -397,10 +395,10 @@ void SP_place_turret(edict_t *self)
 	else if (Q_stricmp(string, "off") == 0)
 		turnon = false;
 	else {
-		if (self->place_turret) turnon = false;
+		if (self->monster_gladiator) turnon = false;
 		else turnon = true;
 	}
 
 
 }
-
+//BYRON end

@@ -1105,8 +1105,8 @@ struct edict_s
 	edict_t *decoy; //pointer to decoy
 	edict_t *creator; //who created entity (used by decoy)
 	
-	edict_t *place_unit;
-	edict_t *place_turret;
+	edict_t *monster_infantry;
+	edict_t *monster_gladiator;
 
 };
 
